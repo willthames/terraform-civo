@@ -9,7 +9,7 @@
     domain_name = "civo-hackathon.link"
     ```
 * Run `terraform init`
-* Run `terraform plan -out plan.out`
+* Run `terraform plan -out plan.out -var-file my.tfvars`
 * Run `terraform apply plan.out` if you're happy with the plan
 
 # Using the cluster

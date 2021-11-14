@@ -18,6 +18,17 @@ resource "civo_firewall_rule" "kubernetes" {
   direction   = "ingress"
   label       = "kubernetes-api-server"
 }
+#
+# Create a firewall rule
+resource "civo_firewall_rule" "public" {
+  firewall_id = civo_firewall.private.id
+  protocol    = "tcp"
+  start_port  = "443"
+  end_port    = "443"
+  cidr        = ["0.0.0.0/0"]
+  direction   = "ingress"
+  label       = "allow-public-access"
+}
 
 resource "civo_kubernetes_cluster" "cluster" {
   name              = var.cluster
