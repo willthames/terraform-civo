@@ -6,6 +6,7 @@
     region      = "NYC1"
     cluster     = "civo-hackathon"
     cidr_ranges = ["1.2.3.4/32"]
+    domain_name = "civo-hackathon.link"
     ```
 * Run `terraform init`
 * Run `terraform plan -out plan.out`
@@ -17,4 +18,4 @@ Running the above steps will create a kubeconfig file in the directory
 
 To use the kubeconfig with `kubectl`, you can run:
 
-* `export KUBECONFIG=$(pwd):~/.kube:$KUBECONFG`
+* `export KUBECONFIG=$(pwd)/kubeconfig:~/.kube/config:$KUBECONFIG`

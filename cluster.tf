@@ -1,6 +1,11 @@
+resource "civo_network" "private" {
+  label = "private"
+}
+
 # Create a firewall
 resource "civo_firewall" "private" {
-  name = "private"
+  network_id = civo_network.private.id
+  name       = "private"
 }
 
 # Create a firewall rule
@@ -14,11 +19,23 @@ resource "civo_firewall_rule" "kubernetes" {
   label       = "kubernetes-api-server"
 }
 
-# Create a cluster
 resource "civo_kubernetes_cluster" "cluster" {
   name              = var.cluster
   applications      = join(",", var.applications)
   num_target_nodes  = var.worker_node_count
   target_nodes_size = var.worker_node_size
   firewall_id       = civo_firewall.private.id
+  network_id        = civo_network.private.id
 }
+
+resource "civo_kubernetes_node_pool" "public" {
+  cluster_id        = civo_kubernetes_cluster.cluster.id
+  num_target_nodes  = var.worker_node_count
+  target_nodes_size = var.worker_node_size
+}
+
+resource "local_file" "kubeconfig" {
+  filename = "${path.module}/kubeconfig"
+  content  = civo_kubernetes_cluster.cluster.kubeconfig
+}
+

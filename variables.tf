@@ -32,5 +32,9 @@ variable "cidr_ranges" {
 variable "applications" {
   description = "List of applications to install on the cluster"
   type        = list(string)
-  default     = []
+  default     = ["-Traefik", "-Metrics Server"]
+}
+
+variable "domain_name" {
+  description = "Domain name to use for applications"
 }
